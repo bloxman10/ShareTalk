@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ShareTalk Test</title>
+</head>
+<body>
+
+<h2>Chat Test</h2>
+
+<input id="room" placeholder="room id" />
+<button onclick="joinRoom()">Join Room</button>
+
+<br><br>
+
+<input id="msg" placeholder="message" />
+<button onclick="sendMessage()">Send</button>
+
+<ul id="messages"></ul>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+  const socket = io("http://localhost:5000", {
+  auth: {
+    token: "YOUR_JWT_TOKEN"
+  }
+});
+
+  function joinRoom() {
+    const roomId = document.getElementById("room").value;
+    socket.emit("join_room", roomId);
+  }
+
+  function sendMessage() {
+    const roomId = document.getElementById("room").value;
+    const msg = document.getElementById("msg").value;
+
+    socket.emit("send_message", {
+      roomId,
+      text: msg
+    });
+  }
+
+  socket.on("receive_message", (data) => {
+    const li = document.createElement("li");
+    li.innerText = data.text;
+    document.getElementById("messages").appendChild(li);
+  });
+</script>
+
+</body>
+</html>

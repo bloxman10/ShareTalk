@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 const messageSchema = new mongoose.Schema(
   {
     roomId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Room",
+      type: String,   // 🔥 שינוי חשוב
       required: true,
     },
     userId: {

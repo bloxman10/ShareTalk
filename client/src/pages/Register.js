@@ -16,6 +16,17 @@ export default function Register() {
   const handleRegister = async () => {
     setError("");
     setSuccess("");
+
+    if (!username.trim() || !email.trim() || !password.trim()) {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -25,14 +36,13 @@ export default function Register() {
         password,
       });
 
-      setSuccess("נרשמת בהצלחה!");
+      setSuccess("Registration successful! Redirecting to login...");
 
       setTimeout(() => {
         navigate("/login");
-      }, 1000);
-
+      }, 1200);
     } catch (err) {
-      setError(err.response?.data?.message || "Error");
+      setError(err.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -43,24 +53,38 @@ export default function Register() {
       <div style={styles.card}>
         <h2>Register</h2>
 
-        <input placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <input placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+
+        <input
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
         {error && <div style={styles.error}>{error}</div>}
         {success && <div style={styles.success}>{success}</div>}
 
         <button onClick={handleRegister}>
-          {loading ? "Loading..." : "Register"}
+          {loading ? "Loading..." : "Create account"}
         </button>
 
-        {/* 🔥 כפתור חזרה לבית */}
-        <button style={styles.homeBtn} onClick={() => navigate("/")}>
-          ← Back to Home
+        <button onClick={() => navigate("/")}>
+          ← Home
         </button>
 
         <p>
-          כבר יש חשבון? <Link to="/login">Login</Link>
+          Already have an account? <Link to="/login">Login</Link>
         </p>
       </div>
     </div>
@@ -81,7 +105,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: 10,
-    width: 300,
+    width: 320,
     padding: 20,
     background: "#1e293b",
     borderRadius: 12,
@@ -94,15 +118,6 @@ const styles = {
   success: {
     background: "green",
     padding: 8,
-    borderRadius: 6,
-  },
-  homeBtn: {
-    marginTop: 10,
-    background: "#64748b",
-    color: "white",
-    border: "none",
-    padding: 8,
-    cursor: "pointer",
     borderRadius: 6,
   },
 };

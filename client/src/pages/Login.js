@@ -13,24 +13,31 @@ export default function Login() {
 
   const handleLogin = async () => {
     setError("");
+
+    if (!email.trim() || !password.trim()) {
+      setError("Please fill in all fields");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
 
       if (!res.data.token) {
-        setError("אין טוקן מהשרת");
+        setError(" Login failed: No token received");
         return;
       }
 
       localStorage.setItem("token", res.data.token);
 
-      // 💥 חשוב: מעבר רק אחרי שמירה
-      navigate("/chat", { replace: true });
-
+      window.location.href = "/chat";
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     } finally {
@@ -44,13 +51,13 @@ export default function Login() {
         <h2>Login</h2>
 
         <input
-          placeholder="email"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
-          placeholder="password"
+          placeholder="Password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -62,12 +69,10 @@ export default function Login() {
           {loading ? "Loading..." : "Login"}
         </button>
 
-        <button onClick={() => navigate("/")}>
-          ← Back to Home
-        </button>
+        <button onClick={() => navigate("/")}>← Home</button>
 
         <p>
-          אין חשבון? <Link to="/register">Register</Link>
+          Don't have an account? <Link to="/register">Register</Link>
         </p>
       </div>
     </div>
@@ -88,7 +93,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: 10,
-    width: 300,
+    width: 320,
     padding: 20,
     background: "#1e293b",
     borderRadius: 12,

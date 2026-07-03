@@ -4,14 +4,20 @@ const Message = require("../models/Message");
 
 // 📜 קבלת היסטוריית הודעות לפי חדר
 router.get("/:roomId", async (req, res) => {
-  try {
-    const messages = await Message.find({ roomId: req.params.roomId })
-      .sort({ createdAt: 1 });
+  const messages = await Message.find({ roomId: req.params.roomId });
+  res.json(messages);
+});
 
-    res.json(messages);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+// מחיקת הודעה אחת
+router.delete("/:id", async (req, res) => {
+  await Message.findByIdAndDelete(req.params.id);
+  res.json({ success: true });
+});
+
+// מחיקת חדר (לא מתנגש יותר!)
+router.delete("/room/:roomId", async (req, res) => {
+  await Message.deleteMany({ roomId: req.params.roomId });
+  res.json({ success: true });
 });
 
 module.exports = router;

@@ -22,17 +22,16 @@ io.use((socket, next) => {
     const token = socket.handshake.auth?.token;
 
     if (!token) {
-      console.log("No token - allowing guest mode");
-      return next(); // 👈 לא חוסם יותר
+      return next(new Error("No token provided"));
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
     socket.user = decoded;
 
     next();
   } catch (err) {
-    console.log("Invalid token - allowing guest mode");
-    next(); // 👈 לא מפיל connection
+    return next(new Error("Invalid token"));
   }
 });
 
@@ -45,27 +44,51 @@ io.on("connection", (socket) => {
     console.log(`joined room ${roomId}`);
   });
 
+  socket.on("delete_message", async (id) => {
+  try {
+    const msg = await Message.findByIdAndDelete(id);
+
+    if (!msg) return;
+
+    io.to(msg.roomId).emit("message_deleted", id);
+
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+socket.on("clear_room", async (roomId) => {
+  try {
+    await Message.deleteMany({ roomId });
+
+    io.to(roomId).emit("room_cleared");
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
   socket.on("send_message", async (data) => {
-    const messageData = {
+  try {
+    const messageData = await Message.create({
       roomId: data.roomId,
       text: data.text,
-      userId: socket.user?.id || "guest",
-      username: socket.user?.username || "guest",
-    };
+      userId: socket.user?.id,
+      username: socket.user?.username,
+    });
 
-    try {
-      await Message.create(messageData);
-    } catch (err) {
-      console.log("DB error:", err.message);
-    }
-
+    // שולח לכל מי שבחדר כולל _id
     io.to(data.roomId).emit("receive_message", messageData);
-  });
 
+  } catch (err) {
+    console.log("DB error:", err.message);
+  }
+});
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);
   });
 });
+
+
 
 server.listen(5000, () => {
   console.log("Server running on port 5000");

@@ -36,7 +36,7 @@ export default function Login() {
       }
 
       localStorage.setItem("token", res.data.token);
-
+      localStorage.setItem("username", res.data.user.username);
       window.location.href = "/chat";
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
@@ -78,6 +78,8 @@ export default function Login() {
     </div>
   );
 }
+
+
 
 const styles = {
   container: {

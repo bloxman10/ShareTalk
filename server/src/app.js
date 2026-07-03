@@ -23,4 +23,6 @@ app.get("/", (req, res) => {
   });
 });
 
+console.log("AUTH ROUTES LOADED");
+
 module.exports = app;

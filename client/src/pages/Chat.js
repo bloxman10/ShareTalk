@@ -7,7 +7,6 @@ export default function Chat() {
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
   const username = localStorage.getItem("username") || "me";
-  const [confirmClear, setConfirmClear] = useState(false);
   const messagesEndRef = useRef(null);
 
   // 🔥 SOCKET + REALTIME
@@ -126,21 +125,16 @@ export default function Chat() {
   };
 
   // 🔥 clear chat
-  const clearChat = async () => {
-    if (!confirmClear) {
-      setConfirmClear(true);
+  const clearChat = () => {
+  const confirmClear = window.confirm(
+    `Are you sure you want to clear the "${room}" chat?\n\nThis action cannot be undone.`
+  );
 
-      setTimeout(() => {
-        setConfirmClear(false);
-      }, 3000);
+  if (!confirmClear) return;
 
-      return;
-    }
-
-    socket.emit("clear_room", room);
-    setMessages([]);
-    setConfirmClear(false);
-  };
+  socket.emit("clear_room", room);
+  setMessages([]);
+};
 
   // 🔥 delete message
   const deleteMessage = (id) => {
@@ -154,61 +148,65 @@ export default function Chat() {
   return (
   <div style={styles.container}>
 
-    {/* SIDEBAR  */}
-    <div style={styles.sidebar}>
-      <h2 style={{ marginBottom: 20 }}>SHARETALK</h2>
+    {/* SIDEBAR */}
+<div style={styles.sidebar}>
+  <h2 style={{ marginBottom: 20 }}>SHARETALK</h2>
 
-      <button style={styles.roomBtn} onClick={() => joinRoom("general")}>
-        # general
-      </button>
+  <button style={styles.roomBtn} onClick={() => joinRoom("general")}>
+    # general
+  </button>
 
-      <button style={styles.roomBtn} onClick={() => joinRoom("gaming")}>
-        # gaming
-      </button>
+  <button style={styles.roomBtn} onClick={() => joinRoom("gaming")}>
+    # gaming
+  </button>
 
-      <button style={styles.roomBtn} onClick={() => joinRoom("school")}>
-        # school
-      </button>
+  <button style={styles.roomBtn} onClick={() => joinRoom("school")}>
+    # school
+  </button>
 
-      {/* 💥 ACTION BUTTONS */}
-  <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 10 }}>
+  {/* Spacer - דוחף את כל הכפתורים למטה */}
+  <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 10 }}>
 
     <button
-      onClick={clearChat}
-      style={{
-        background: confirmClear ? "darkred" : "red",
-        color: "white",
-        padding: 10,
-        border: "none",
-        cursor: "pointer",
-        borderRadius: 6,
-      }}
-    >
-      {confirmClear ? "Click again to confirm" : "Clear Chat"}
-    </button>
+  onClick={clearChat}
+  style={{
+    background: "red",
+    color: "white",
+    padding: 10,
+    border: "none",
+    cursor: "pointer",
+    borderRadius: 6,
+    width: "100%",
+  }}
+>
+  Clear Chat
+</button>
 
     <button
       onClick={deleteAccount}
       style={{
-        background: "black",
+        background: "red",
         color: "white",
         padding: 10,
         border: "none",
         cursor: "pointer",
         borderRadius: 6,
+        width: "100%",
       }}
     >
       Delete Account
     </button>
-  </div>
 
-  {/* 🚪 LOGOUT */}
-  <div style={{ marginTop: "auto" }}>
-    <button style={styles.logoutBtn} onClick={logout}>
+    <button
+      style={styles.logoutBtn}
+      onClick={logout}
+    >
       Logout
     </button>
+
   </div>
 </div>
+
 
     {/* CHAT AREA */}
     <div style={styles.chatArea}>

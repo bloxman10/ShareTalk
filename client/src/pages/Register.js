@@ -22,14 +22,11 @@ export default function Register() {
       return;
     }
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long");
-      return;
-    }
 
     setLoading(true);
 
     try {
+        
       await axios.post("http://localhost:5000/api/auth/register", {
         username,
         email,

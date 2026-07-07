@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+
+  server:
+    build:
+      context: ./server
+    container_name: sharetalk-server
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+
+
+  client:
+    build:
+      context: ./client
+    container_name: sharetalk-client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server

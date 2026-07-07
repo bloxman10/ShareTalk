@@ -125,16 +125,16 @@ export default function Chat() {
   };
 
   // 🔥 clear chat
-  const clearChat = () => {
-  const confirmClear = window.confirm(
-    `Are you sure you want to clear the "${room}" chat?\n\nThis action cannot be undone.`
-  );
+//   const clearChat = () => {
+//   const confirmClear = window.confirm(
+//     `Are you sure you want to clear the "${room}" chat?\n\nThis action cannot be undone.`
+//   );
 
-  if (!confirmClear) return;
+//   if (!confirmClear) return;
 
-  socket.emit("clear_room", room);
-  setMessages([]);
-};
+//   socket.emit("clear_room", room);
+//   setMessages([]);
+// };
 
   // 🔥 delete message
   const deleteMessage = (id) => {
@@ -167,7 +167,7 @@ export default function Chat() {
   {/* Spacer - דוחף את כל הכפתורים למטה */}
   <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 10 }}>
 
-    <button
+    {/* <button
   onClick={clearChat}
   style={{
     background: "red",
@@ -180,7 +180,7 @@ export default function Chat() {
   }}
 >
   Clear Chat
-</button>
+</button> */}
 
     <button
       onClick={deleteAccount}

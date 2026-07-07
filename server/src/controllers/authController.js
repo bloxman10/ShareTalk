@@ -7,7 +7,13 @@ const jwt = require("jsonwebtoken");
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+      message: "Invalid email format"
+    });
+}
     // בדיקה אם האימייל כבר קיים
     const existingUser = await User.findOne({ email });
 

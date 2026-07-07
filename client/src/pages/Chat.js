@@ -60,7 +60,7 @@ export default function Chat() {
   const loadHistory = async (roomId) => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/messages/${roomId}`
+        `${process.env.REACT_APP_API_URL}/api/messages/${roomId}`
       );
       setMessages(res.data);
     } catch (err) {
@@ -108,7 +108,7 @@ export default function Chat() {
       const token = localStorage.getItem("token");
 
       await axios.delete(
-        "http://localhost:5000/api/auth/me",
+        `${process.env.REACT_APP_API_URL}/api/auth/me`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

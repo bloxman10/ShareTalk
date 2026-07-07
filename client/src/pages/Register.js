@@ -22,18 +22,19 @@ export default function Register() {
       return;
     }
 
-
     setLoading(true);
 
     try {
-        
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, {
-        username,
-        email,
-        password,
-      });
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/auth/register`,
+        {
+          username,
+          email,
+          password,
+        }
+      );
 
-      setSuccess("Registration successful! Redirecting to login...");
+      setSuccess("Registration successful! Redirecting...");
 
       setTimeout(() => {
         navigate("/login");
@@ -48,40 +49,66 @@ export default function Register() {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2>Register</h2>
+        <div style={styles.logo}>💬</div>
+
+        <h1 style={styles.title}>Create Account</h1>
+
+        <p style={styles.subtitle}>
+          Join ShareTalk and start chatting.
+        </p>
 
         <input
+          style={styles.input}
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
 
         <input
+          style={styles.input}
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
+          style={styles.input}
           placeholder="Password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
+        <div style={styles.passwordInfo}>
+          Password must contain:
+          <br />
+          • At least 8 characters
+          <br />
+          • Uppercase letter
+          <br />
+          • Lowercase letter
+          <br />
+          • Number
+          <br />
+          • Special character
+        </div>
+
         {error && <div style={styles.error}>{error}</div>}
         {success && <div style={styles.success}>{success}</div>}
 
-        <button onClick={handleRegister}>
-          {loading ? "Loading..." : "Create account"}
+        <button style={styles.registerBtn} onClick={handleRegister}>
+          {loading ? "Creating account..." : "Create Account"}
         </button>
 
-        <button onClick={() => navigate("/")}>
-          ← Home
+        <button style={styles.homeBtn} onClick={() => navigate("/")}>
+          ← Back to Home
         </button>
 
-        <p>
-          Already have an account? <Link to="/login">Login</Link>
+        <p style={styles.footer}>
+          Already have an account?{" "}
+          <Link style={styles.link} to="/login">
+            Login
+          </Link>
         </p>
       </div>
     </div>
@@ -94,27 +121,113 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background: "#0f172a",
-    color: "white",
-    fontFamily: "Arial",
+    background:
+      "linear-gradient(135deg,#eef2ff,#dbeafe,#f8fafc)",
+    fontFamily: "Segoe UI, sans-serif",
   },
+
   card: {
+    width: 390,
+    background: "white",
+    borderRadius: 20,
+    padding: 40,
+    boxShadow: "0 20px 45px rgba(0,0,0,.15)",
     display: "flex",
     flexDirection: "column",
-    gap: 10,
-    width: 320,
-    padding: 20,
-    background: "#1e293b",
-    borderRadius: 12,
   },
+
+  logo: {
+    fontSize: 55,
+    textAlign: "center",
+    marginBottom: 10,
+  },
+
+  title: {
+    margin: 0,
+    textAlign: "center",
+    color: "#4338ca",
+    fontSize: 32,
+  },
+
+  subtitle: {
+    textAlign: "center",
+    color: "#6b7280",
+    marginTop: 10,
+    marginBottom: 25,
+    lineHeight: 1.5,
+  },
+
+  input: {
+    padding: 14,
+    marginBottom: 15,
+    borderRadius: 10,
+    border: "1px solid #d1d5db",
+    fontSize: 16,
+    outline: "none",
+  },
+
+  passwordInfo: {
+    background: "#f3f4f6",
+    color: "#6b7280",
+    padding: 12,
+    borderRadius: 10,
+    fontSize: 13,
+    lineHeight: 1.6,
+    marginBottom: 18,
+  },
+
+  registerBtn: {
+    padding: 14,
+    background: "#4f46e5",
+    color: "white",
+    border: "none",
+    borderRadius: 10,
+    cursor: "pointer",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+
+  homeBtn: {
+    marginTop: 12,
+    padding: 14,
+    background: "#f3f4f6",
+    color: "#374151",
+    border: "none",
+    borderRadius: 10,
+    cursor: "pointer",
+    fontSize: 15,
+    fontWeight: "bold",
+  },
+
   error: {
-    background: "red",
-    padding: 8,
-    borderRadius: 6,
+    background: "#fee2e2",
+    color: "#b91c1c",
+    border: "1px solid #fecaca",
+    padding: 12,
+    borderRadius: 10,
+    marginBottom: 15,
+    textAlign: "center",
   },
+
   success: {
-    background: "green",
-    padding: 8,
-    borderRadius: 6,
+    background: "#dcfce7",
+    color: "#166534",
+    border: "1px solid #86efac",
+    padding: 12,
+    borderRadius: 10,
+    marginBottom: 15,
+    textAlign: "center",
+  },
+
+  footer: {
+    textAlign: "center",
+    marginTop: 25,
+    color: "#6b7280",
+  },
+
+  link: {
+    color: "#4f46e5",
+    textDecoration: "none",
+    fontWeight: "bold",
   },
 };

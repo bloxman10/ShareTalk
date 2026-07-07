@@ -5,18 +5,34 @@ export default function Home() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>SHARETALK</h1>
+      <div style={styles.card}>
+        <div style={styles.logo}>💬</div>
 
-      <p style={styles.subtitle}>Real-time chat app</p>
+        <h1 style={styles.title}>ShareTalk</h1>
 
-      <div style={styles.buttons}>
-        <button onClick={() => navigate("/login")} style={styles.login}>
+        <p style={styles.subtitle}>
+          Chat with friends in real time.
+          <br />
+          Fast, secure and simple.
+        </p>
+
+        <button
+          style={styles.primaryButton}
+          onClick={() => navigate("/login")}
+        >
           Login
         </button>
 
-        <button onClick={() => navigate("/register")} style={styles.register}>
-          Register
+        <button
+          style={styles.secondaryButton}
+          onClick={() => navigate("/register")}
+        >
+          Create Account
         </button>
+
+        <p style={styles.footer}>
+          Built with React • Node.js • Socket.IO
+        </p>
       </div>
     </div>
   );
@@ -26,39 +42,72 @@ const styles = {
   container: {
     height: "100vh",
     display: "flex",
-    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    background: "linear-gradient(135deg,#0f172a,#1e293b)",
-    color: "white",
-    fontFamily: "Arial",
+    background:
+      "linear-gradient(135deg,#eef2ff 0%,#dbeafe 50%,#f8fafc 100%)",
+    fontFamily: "Segoe UI, sans-serif",
   },
-  title: {
-    fontSize: 60,
+
+  card: {
+    width: 430,
+    background: "#fff",
+    borderRadius: 20,
+    padding: 45,
+    textAlign: "center",
+    boxShadow: "0 20px 45px rgba(0,0,0,.15)",
+  },
+
+  logo: {
+    fontSize: 70,
     marginBottom: 10,
   },
+
+  title: {
+    margin: 0,
+    fontSize: 42,
+    color: "#4338ca",
+    fontWeight: "700",
+  },
+
   subtitle: {
-    color: "#94a3b8",
-    marginBottom: 30,
+    color: "#6b7280",
+    marginTop: 15,
+    marginBottom: 35,
+    fontSize: 17,
+    lineHeight: 1.6,
   },
-  buttons: {
-    display: "flex",
-    gap: 15,
-  },
-  login: {
-    padding: "10px 20px",
-    background: "#22c55e",
+
+  primaryButton: {
+    width: "100%",
+    padding: 15,
+    marginBottom: 15,
     border: "none",
-    borderRadius: 8,
-    cursor: "pointer",
+    borderRadius: 12,
+    background: "#4f46e5",
     color: "white",
+    fontSize: 17,
+    fontWeight: "bold",
+    cursor: "pointer",
+    transition: "0.2s",
   },
-  register: {
-    padding: "10px 20px",
-    background: "#3b82f6",
-    border: "none",
-    borderRadius: 8,
+
+  secondaryButton: {
+    width: "100%",
+    padding: 15,
+    border: "2px solid #4f46e5",
+    borderRadius: 12,
+    background: "white",
+    color: "#4f46e5",
+    fontSize: 17,
+    fontWeight: "bold",
     cursor: "pointer",
-    color: "white",
+    transition: "0.2s",
+  },
+
+  footer: {
+    marginTop: 30,
+    color: "#9ca3af",
+    fontSize: 13,
   },
 };

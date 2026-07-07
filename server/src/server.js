@@ -14,6 +14,7 @@ const io = new Server(server, {
   cors: {
     origin: [
       "http://localhost:3000",
+      "https://share-talk-one.vercel.app/",
     ],
     methods: ["GET", "POST", "DELETE"],
   },

@@ -11,7 +11,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:3000",
-    "https://share-talk-one.vercel.app/"
+    "https://share-talk-one.vercel.app"
   ],
   credentials: true
 }));

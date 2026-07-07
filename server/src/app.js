@@ -8,7 +8,13 @@ const roomRoutes = require("./routes/roomRoutes");
 const app = express();
 
 // 🔥 חשוב: קודם כל middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://share-talk-one.vercel.app/"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // routes
